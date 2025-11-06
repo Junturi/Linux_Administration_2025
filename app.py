@@ -11,10 +11,10 @@ app = Flask(__name__)
 def home():
     # Connect to MySQL
     conn = mysql.connector.connect (
-        host=os.getenv("DB_HOST", "localhost"),
-        user=os.getenv("DB_USER", "USERNAME"),
-        password=os.getenv("DB_PASS", "PASSWORD"),
-        database=os.getenv("DB_NAME", "DATABASE")
+        host="localhost",
+        user=os.getenv("USERNAME"),
+        password=os.getenv("PASSWORD"),
+        database=os.getenv("DATABASE")
     )
 
     # Execute command
