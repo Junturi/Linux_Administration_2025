@@ -1,31 +1,32 @@
-from flask import FLask
+from flask import Flask
 import mysql.connector
 import os
+from dotenv import load_dotenv
 
 load_dotenv()
 
 app = Flask(__name__)
 
-@app.rout('/')
+@app.route('/')
 def home():
     # Connect to MySQL
     conn = mysql.connector.connect (
-        host = "localhost",
-        user = "USERNAME",
-        password = "PASSWORD",
-        database = "DATABASE"
+        host=os.getenv("DB_HOST", "localhost"),
+        user=os.getenv("DB_USER", "USERNAME"),
+        password=os.getenv("DB_PASS", "PASSWORD"),
+        database=os.getenv("DB_NAME", "DATABASE")
     )
 
-# Execute command
-cursor = conn.cursor()
-cursor.execute("SELECT 'Hello from MySQL!'")
-result = cursor.fetchone()
+    # Execute command
+    cursor = conn.cursor()
+    cursor.execute("SELECT 'Hello from MySQL!'")
+    result = cursor.fetchone()
 
-# Close connection
-cursor.close()
-conn.close()
+    # Close connection
+    cursor.close()
+    conn.close()
 
-return f"<h1>{result[0]}</h1>"
+    return f"<h1>{result[0]}</h1>"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port = 5000)
