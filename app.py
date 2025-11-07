@@ -19,14 +19,14 @@ def home():
 
     # Execute command
     cursor = conn.cursor()
-    cursor.execute("SELECT 'Hello from MySQL!'")
+    cursor.execute("SELECT NOW() AS current_time")
     result = cursor.fetchone()
 
     # Close connection
     cursor.close()
     conn.close()
 
-    return f"<h1>{result[0]}</h1>"
+    return render_template("index.html", time=result[0])
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port = 5000)
