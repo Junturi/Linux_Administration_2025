@@ -6,7 +6,7 @@ After=network.target
 User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/lemp-app
-Encironment="PATH=/home/ubuntu/lemp-app/venv/bin"
+Environment="PATH=/home/ubuntu/lemp-app/venv/bin"
 ExecStart=/home/ubuntu/lemp-app/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:5000 app:app
 Restart=always
 RestartSec=5

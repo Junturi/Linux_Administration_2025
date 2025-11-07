@@ -21,5 +21,7 @@ sudo systemctl restart apache2
 
 echo "Restarting nginx"
 sudo systemctl restart nginx
+sudo systemctl daemon-reload
+sudo systemctl restart lemp-app
 
 echo "Update complete."
