@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    # Connect to MySQL
+    # Connect to MySQL, get the enviromental variables from .env
     conn = mysql.connector.connect (
         host="localhost",
         user=os.getenv("USERNAME"),

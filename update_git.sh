@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script is used to automatically pull files from git and update files on the server
+
 echo "Pulling latest changes..."
 sudo git pull
 
