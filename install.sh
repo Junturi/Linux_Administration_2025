@@ -8,9 +8,13 @@ sudo git pull
 echo "Copying updated files..."
 sudo cp apache/index.html /var/www/html/index.html
 sudo cp nginx/index.html /var/www/nginx/index.html
-sudo cp app.py ~/lemp-app/app.py
-sudo cp lemp-app /etc/nginx/sites-available/lemp-app
-sudo cp lemp-app.service /etc/systemd/system/lemp-app.service
+
+sudo cp lemp-app/app.py ~/lemp-app/app.py
+sudo cp -ra lemp-app/templates/ ~/lemp-app/templates/
+
+sudo cp lemp-app_config/lemp-app /etc/nginx/sites-available/lemp-app
+sudo cp lemp-app_config/lemp-app.service /etc/systemd/system/lemp-app.service
+
 
 echo "Restarting apache"
 sudo systemctl restart apache2
