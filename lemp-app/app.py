@@ -18,7 +18,7 @@ def home():
 
     # Execute command
     cursor = conn.cursor()
-    cursor.execute("SELECT NOW() AS current_time")
+    cursor.execute("SELECT CURRENT_TIME;")
     result = cursor.fetchone()
 
     # Close connection
