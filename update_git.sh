@@ -9,6 +9,7 @@ echo "Copying updated files..."
 sudo cp apache/index.html /var/www/html/index.html
 sudo cp nginx/index.html /var/www/nginx/index.html
 sudo cp app.py ~/lemp-app/app.py
+sudo cp lemp-app /etc/nginx/sites-available/lemp-app
 
 echo "Restarting apache"
 sudo systemctl restart apache2
