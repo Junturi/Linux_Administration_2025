@@ -17,7 +17,7 @@ sudo cp lemp-app_config/lemp-app.service /etc/systemd/system/lemp-app.service
 
 sudo cp streamlit-app/streamlit_app.py ~/streamlit-app/streamlit_app.py
 sudo cp streamlit-app/config.toml ~/streamlit-app/.streamlit/config.toml
-sudo cp streamlit-app/streamlit.service /etc/stystemd/stystem/streamlit.service
+sudo cp streamlit-app/streamlit.service /etc/stystemd/system/streamlit.service
 
 #Apache server no longer in use
 #echo "Restarting apache"
