@@ -15,6 +15,10 @@ sudo cp -ra lemp-app/templates/ ~/lemp-app/
 sudo cp lemp-app_config/lemp-app /etc/nginx/sites-available/lemp-app
 sudo cp lemp-app_config/lemp-app.service /etc/systemd/system/lemp-app.service
 
+sudo cp streamlit-app/streamlit_app.py ~/streamlit_app/stremlit_app.py
+sudo cp streamlit-app/config.toml ~/streamlit_app/.streamlit/config.toml
+sudo cp streamlit-app/streamlit.service /etc/stystemd/stystem/streamlit.service
+
 
 echo "Restarting apache"
 sudo systemctl restart apache2

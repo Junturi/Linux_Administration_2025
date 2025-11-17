@@ -1,0 +1,13 @@
+[Unit]
+Description=Streamlit Server
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/streamlit_app
+ExecStart=/bin/bash -c "source /home/ubuntu/streamlit_app/venv/bin/activate &&
+streamlit run /home/ubuntu/streamlit_app/streamlit_app.py --server.baseUrlPath=/data-analysis"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
