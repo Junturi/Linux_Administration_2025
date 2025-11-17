@@ -19,9 +19,9 @@ sudo cp streamlit-app/streamlit_app.py ~/streamlit_app/stremlit_app.py
 sudo cp streamlit-app/config.toml ~/streamlit_app/.streamlit/config.toml
 sudo cp streamlit-app/streamlit.service /etc/stystemd/stystem/streamlit.service
 
-
-echo "Restarting apache"
-sudo systemctl restart apache2
+#Apache server no longer in use
+#echo "Restarting apache"
+#sudo systemctl restart apache2
 
 echo "Restarting nginx"
 sudo systemctl restart nginx
