@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=ubuntu
 WorkingDirectory=/home/ubuntu/streamlit-app
-ExecStart=/bin/bash -c 'source /home/ubuntu/streamlit-app/venv/bin/activate && exec streamlit run /home/ubuntu/streamlit-app/streamlit_app.py --server.port=8501 --server.address=127.0.0.1 --server.baseUrlPath=/data-analysis'
+ExecStart=/bin/bash -c 'source /home/ubuntu/streamlit-app/venv/bin/activate && streamlit run /home/ubuntu/streamlit-app/streamlit_app.py'
 Restart=always
 
 
