@@ -212,6 +212,26 @@
         const nicknameInput = document.getElementById('nickname');
         const sendBtn = document.getElementById('sendBtn');
         const statusDot = document.getElementById('statusDot');
+
+        // Lataa tietokannasta viestit
+        async function loadLatestMessages() {
+            try {
+                const res = await fetch("http://86.50.23.106/api/messages?limit=10");
+                const messages = await res.json();
+
+                for (const msg of messages) {
+                    addMessage(
+                        msg.nickname,
+                        msg.message,
+                        false, // not user's own
+                        msg.created_at // pass timestamp from DB
+                    );
+                }
+            } catch (err) {
+                console.error("Virhe ladattaessa viestejä:", err);
+                addSystemMessage("Viimeisimpiä viestejä ei voitu ladata.");
+            }
+        }
         
         // Lataa nimimerkki localStoragesta
         nicknameInput.value = localStorage.getItem('mqtt_nickname') || '';
@@ -219,7 +239,7 @@
         nicknameInput.addEventListener('change', () => {
             localStorage.setItem('mqtt_nickname', nicknameInput.value);
         });
-        
+
         client.on('connect', () => {
             console.log('Yhdistetty MQTT brokeriin');
             statusDot.classList.add('connected');
@@ -251,18 +271,18 @@
         client.on('message', (topic, message) => {
             try {
                 const data = JSON.parse(message.toString());
-                addMessage(data.nickname, data.text, data.clientId === client.options.clientId);
+                addMessage(data.nickname, data.text, data.clientId === client.options.clientId, data.timestamp);
             } catch (e) {
                 // Jos viesti ei ole JSON, näytä sellaisenaan
                 addMessage('Tuntematon', message.toString(), false);
             }
         });
         
-        function addMessage(nickname, text, isOwn) {
+        function addMessage(nickname, text, isOwn, timestamp) {
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message' + (isOwn ? ' own' : '');
             
-            const time = new Date().toLocaleTimeString('fi-FI', {
+            const time = new Date(timestamp || Date.now()).toLocaleTimeString('fi-FI', {
                 hour: '2-digit',
                 minute: '2-digit'
             });
@@ -314,6 +334,10 @@
                 sendMessage();
             }
         });
+
+        window.addEventListener("DOMContentLoaded", () => {
+            loadLatestMessages();
+         });
     </script>
 </body>
 </html>
