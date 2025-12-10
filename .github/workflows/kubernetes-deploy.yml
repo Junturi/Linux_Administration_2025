@@ -25,6 +25,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: Debug repo structure
+        run: |
+          echo "== Current working directory =="
+          pwd
+          echo "== Repository tree =="
+          ls -R .
 
       # Docker build ja push
       - name: Log in to Container Registry
