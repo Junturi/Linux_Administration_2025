@@ -2,9 +2,11 @@ name: Build and Deploy to Kubernetes
 
 on:
   push:
-    branches: [ main ]
+    paths:
+      - 'lemp-containers-cicd/**'
   pull_request:
-    branches: [ main ]
+    paths:
+      - 'lemp-containers-cicd/**'
 
 env:
   REGISTRY: ghcr.io
