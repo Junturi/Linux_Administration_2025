@@ -1,6 +1,7 @@
 name: Build and Deploy to Kubernetes
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'lemp-containers-cicd/**'
