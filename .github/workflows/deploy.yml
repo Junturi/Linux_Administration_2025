@@ -124,6 +124,7 @@ jobs:
             echo "DB_NAME=${{ secrets.DB_NAME }}" > .env.production
             echo "DB_USER=${{ secrets.DB_USER }}" >> .env.production
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env.production
+            echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}" >> .env.production
 
         - name: Copy .env.production to VM
           uses: appleboy/scp-action@v0.1.4
