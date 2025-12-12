@@ -96,8 +96,6 @@ jobs:
             target: /opt/lemp/db/init/
             strip_components: 2
 
-        
-
         - name: Copy docker-compose.prod.yml to VM
           uses: appleboy/scp-action@v0.1.4
           with:
@@ -106,7 +104,17 @@ jobs:
             key: ${{ secrets.SSH_KEY }}
             port: 22
             source: ./lemp-containers-cicd/docker-compose.prod.yml
-            target: /opt/lemp/docker-compose.yml
+            target: /opt/lemp/
+
+        - name: Rename docker-compose file
+          uses: appleboy/ssh-action@v1.0.3
+          with:
+            host: ${{ secrets.SSH_HOST }}
+            username: ${{ secrets.SSH_USER }}
+            key: ${{ secrets.SSH_KEY }}
+            port: 22
+            script: |
+              mv /opt/lemp/docker-compose.prod.yml /opt/lemp/docker-compose.yml
 
         - name: Create .env.production from GitHub Secrets
           run: |
