@@ -167,11 +167,16 @@ jobs:
             cd /opt/lemp
             
             if [ ! -d "/var/lib/docker/volumes/lemp_db_data" ]; then
-              docker-compose down -v
+              docker-compose --env-file .env down -v
             else
-              docker-compose down
+              docker-compose --env-file .env down
             fi
- 
-            docker-compose pull
-            docker-compose up -d
-            docker-compose ps
+
+            # Pull latest images
+            docker-compose --env-file .env pull
+
+            # Start containers
+            docker-compose --env-file .env up -d
+
+            # Show status
+            docker-compose --env-file .env ps
