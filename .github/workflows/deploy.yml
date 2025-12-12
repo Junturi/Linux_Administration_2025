@@ -34,7 +34,7 @@ jobs:
       - name: Build & push backend
         uses: docker/build-push-action@v5
         with:
-          context: ./lemp-containers-cicd
+          context: ./lemp-containers-cicd/backend
           file: ./lemp-containers-cicd/backend/Dockerfile
           push: true
           tags: |
@@ -46,7 +46,7 @@ jobs:
       - name: Build & push frontend
         uses: docker/build-push-action@v5
         with:
-          context: ./lemp-containers-cicd
+          context: ./lemp-containers-cicd/frontend
           file: ./lemp-containers-cicd/frontend/Dockerfile
           push: true
           tags: |
