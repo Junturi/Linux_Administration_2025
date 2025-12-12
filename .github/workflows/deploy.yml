@@ -105,7 +105,7 @@ jobs:
             username: ${{ secrets.SSH_USER }}
             key: ${{ secrets.SSH_KEY }}
             port: 22
-            source: lemp-containers-cicd/docker-compose.prod.yml
+            source: ./lemp-containers-cicd/docker-compose.prod.yml
             target: /tmp/
 
         - name: Create .env.production from GitHub Secrets
