@@ -105,6 +105,7 @@ jobs:
             port: 22
             source: ./lemp-containers-cicd/docker-compose.prod.yml
             target: /opt/lemp/
+            strip_components: 1
 
         - name: Rename docker-compose file
           uses: appleboy/ssh-action@v1.0.3
