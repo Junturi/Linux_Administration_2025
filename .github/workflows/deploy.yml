@@ -106,7 +106,7 @@ jobs:
             key: ${{ secrets.SSH_KEY }}
             port: 22
             source: ./lemp-containers-cicd/docker-compose.prod.yml
-            target: /tmp/
+            target: /opt/lemp/docker-compose.yml
 
         - name: Create .env.production from GitHub Secrets
           run: |
@@ -135,17 +135,6 @@ jobs:
               sudo mv /tmp/.env.production /opt/lemp/.env
               sudo chown $(whoami) /opt/lemp/.env
               sudo chmod 600 /opt/lemp/.env
-
-
-        - name: Move docker-compose.prod.yml to /opt/lemp/ on VM
-          uses: appleboy/ssh-action@v1.0.3
-          with:
-            host: ${{ secrets.SSH_HOST }}
-            username: ${{ secrets.SSH_USER }}
-            key: ${{ secrets.SSH_KEY }}
-            port: 22
-            script: |
-              sudo cp /tmp/docker-compose.prod.yml /opt/lemp/docker-compose.yml
             
 
   deploy:
