@@ -1,11 +1,10 @@
 version: "3.9"
 
-env_file:
-  - .env
-  
 services:
   db:
     image: mysql:8.4
+    env_file:
+      - .env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
@@ -22,6 +21,8 @@ services:
 
   backend:
     image: ${DOCKERHUB_USERNAME}/lemp-backend:latest
+    env_file:
+      - .env
     environment:
       DB_HOST: db
       DB_USER: ${DB_USER}
@@ -54,8 +55,10 @@ services:
     build: ./mqtt-chat/logger
     env_file: .env
     depends_on:
-      - mqtt-broker
+      - mqtt
       - db
+    networks:
+      - backend_frontend_net
     restart: unless-stopped
 
   mqtt-api:
@@ -65,9 +68,13 @@ services:
       - db
     ports:
       - "5001:5000"
+    networks:
+      - backend_frontend_net
 
   frontend:
     image: ${DOCKERHUB_USERNAME}/lemp-frontend:latest
+    env_file:
+      - .env
     depends_on:
       - backend
     networks:
