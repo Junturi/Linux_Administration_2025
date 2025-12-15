@@ -43,6 +43,28 @@ jobs:
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/lemp-backend:latest
           cache-to: type=inline
 
+      - name: Copy mqtt-chat folder to VM
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          source: ./mqtt-chat
+          target: /opt/lemp/
+      
+      - name: Set permissions for mqtt-chat
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            sudo chown -R $(whoami) /opt/lemp/mqtt-chat
+            sudo chmod -R u+rw /opt/lemp/mqtt-chat
+
+
       - name: Build & push MQTT logger
         uses: docker/build-push-action@v5
         with:
