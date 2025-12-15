@@ -1,12 +1,10 @@
 version: "3.9"
+
 services:
   db:
     image: mysql:8.4
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
 
     volumes:
       - db_data:/var/lib/mysql
@@ -26,24 +24,58 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
-
+      MQTT_HOST: mqtt
+      MQTT_PORT: 1883
     networks:
       - backend_frontend_net
     depends_on:
       db:
         condition: service_healthy
+      mqtt:
+        condition: service_started
+
+  mqtt:
+    image: eclipse-mosquitto:2
+    volumes:
+      - ./mqtt-chat/mosquitto/config:/mosquitto/config
+      - ./mqtt-chat/mosquitto/data:/mosquitto/data
+      - ./mqtt-chat/mosquitto/log:/mosquitto/log
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    networks:
+      - backend_frontend_net
+    restart: unless-stopped
+
+  mqtt-logger:
+    build: ./mqtt-chat/logger
+    env_file: .env
+    depends_on:
+      - mqtt-broker
+      - db
+    restart: unless-stopped
+
+  mqtt-api:
+    build: ./mqtt-chat/api
+    env_file: .env
+    depends_on:
+      - db
+    ports:
+      - "5001:5000"
 
   frontend:
     image: ${DOCKERHUB_USERNAME}/lemp-frontend:latest
-    networks:
-      - backend_frontend_net
     depends_on:
       - backend
+    networks:
+      - backend_frontend_net
     ports:
-      - "8001:80"   # expose only frontend to the host
+      - "8001:80"
 
 volumes:
   db_data:
+  mosquitto_data:
+  mosquitto_log:
 
 networks:
   backend_frontend_net:

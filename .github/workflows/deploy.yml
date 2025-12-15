@@ -43,6 +43,27 @@ jobs:
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/lemp-backend:latest
           cache-to: type=inline
 
+      - name: Build & push MQTT logger
+        uses: docker/build-push-action@v5
+        with:
+          context: ./lemp-containers-cicd/mqtt-chat/logger
+          file: ./lemp-containers-cicd/mqtt-chat/logger/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/mqtt-logger:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/mqtt-logger:${{ github.sha }}
+
+      - name: Build & push MQTT API
+        uses: docker/build-push-action@v5
+        with:
+          context: ./lemp-containers-cicd/mqtt-chat/api
+          file: ./lemp-containers-cicd/mqtt-chat/api/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/mqtt-api:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/mqtt-api:${{ github.sha }}
+
+
       - name: Build & push frontend
         uses: docker/build-push-action@v5
         with:
