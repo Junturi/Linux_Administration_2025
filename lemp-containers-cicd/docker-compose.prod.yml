@@ -52,7 +52,7 @@ services:
     restart: unless-stopped
 
   mqtt-logger:
-    build: ./mqtt-chat/logger
+    image: ${DOCKERHUB_USERNAME}/mqtt-logger:latest
     env_file: .env
     depends_on:
       - mqtt
@@ -62,7 +62,7 @@ services:
     restart: unless-stopped
 
   mqtt-api:
-    build: ./mqtt-chat/api
+    image: ${DOCKERHUB_USERNAME}/mqtt-api:latest
     env_file: .env
     depends_on:
       - db

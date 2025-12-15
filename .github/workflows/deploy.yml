@@ -50,21 +50,23 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          source: ./lemp-containers-cicd/mqtt-chat
-          target: /opt/lemp/
-      
-      - name: Set permissions for mqtt-chat
-        uses: appleboy/ssh-action@v1.0.3
+          source: lemp-containers-cicd/mqtt-chat/
+          target: /opt/lemp/mqtt-chat/
+          strip_components: 0
+
+      - name: Build & push frontend
+        uses: docker/build-push-action@v5
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          script: |
-            sudo chown -R $(whoami) /opt/lemp/mqtt-chat
-            sudo chmod -R u+rw /opt/lemp/mqtt-chat
+          context: ./lemp-containers-cicd/frontend
+          file: ./lemp-containers-cicd/frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/lemp-frontend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/lemp-frontend:${{ github.sha }}
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/lemp-frontend:latest
+          cache-to: type=inline
 
-
+      
       - name: Build & push MQTT logger
         uses: docker/build-push-action@v5
         with:
@@ -84,20 +86,6 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/mqtt-api:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/mqtt-api:${{ github.sha }}
-
-
-      - name: Build & push frontend
-        uses: docker/build-push-action@v5
-        with:
-          context: ./lemp-containers-cicd/frontend
-          file: ./lemp-containers-cicd/frontend/Dockerfile
-          push: true
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/lemp-frontend:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/lemp-frontend:${{ github.sha }}
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/lemp-frontend:latest
-          cache-to: type=inline
-
   
   copy-init-sql:
       runs-on: ubuntu-latest
