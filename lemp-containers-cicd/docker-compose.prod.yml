@@ -45,7 +45,7 @@ services:
       - ./mqtt-chat/mosquitto/data:/mosquitto/data
       - ./mqtt-chat/mosquitto/log:/mosquitto/log
     ports:
-      - "1884:1883
+      - "1884:1883"
       - "9001:9001"
     networks:
       - backend_frontend_net
