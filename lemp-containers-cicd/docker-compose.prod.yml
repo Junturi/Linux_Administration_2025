@@ -1,5 +1,8 @@
 version: "3.9"
 
+env_file:
+  - .env
+  
 services:
   db:
     image: mysql:8.4
