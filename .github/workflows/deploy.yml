@@ -50,7 +50,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          source: ./mqtt-chat
+          source: ./lemp-containers-cicd/mqtt-chat
           target: /opt/lemp/
       
       - name: Set permissions for mqtt-chat
