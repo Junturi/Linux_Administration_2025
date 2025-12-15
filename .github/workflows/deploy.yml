@@ -43,17 +43,6 @@ jobs:
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/lemp-backend:latest
           cache-to: type=inline
 
-      - name: Copy mqtt-chat folder to VM
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          source: lemp-containers-cicd/mqtt-chat/
-          target: /opt/lemp/mqtt-chat/
-          strip_components: 0
-
       - name: Build & push frontend
         uses: docker/build-push-action@v5
         with:
