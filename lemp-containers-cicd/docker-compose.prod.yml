@@ -44,7 +44,7 @@ services:
   mqtt:
     image: eclipse-mosquitto:2
     volumes:
-      - ./mqtt-chat/mosquitto/config:/mosquitto/config:ro
+      - ./mqtt-chat/mosquitto/config:/mosquitto/config
       - ./mqtt-chat/mosquitto/data:/mosquitto/data
       - ./mqtt-chat/mosquitto/log:/mosquitto/log
     ports:
