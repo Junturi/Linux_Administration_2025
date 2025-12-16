@@ -241,6 +241,8 @@ function initChat() {
     nick.value = localStorage.getItem("mqtt_nickname") || "";
     nick.onchange = () => localStorage.setItem("mqtt_nickname", nick.value);
 
+    loadMessages();
+
     client.on("connect", () => {
         dot.classList.add("connected");
         input.disabled = false;
@@ -270,6 +272,21 @@ function addMessage(nick, text, own) {
     div.innerHTML = `<div class="message-bubble">${text}</div><div class="message-meta">${nick}</div>`;
     document.getElementById("messages").appendChild(div);
 }
+
+async function loadMessages() {
+    try {
+        const response = await fetch(`http://${window.location.hostname}:5002/api/messages?limit=50`);
+        const data = await response.json();
+
+        data.forEach(msg => {
+            addMessage(msg.nickname, msg.message, false);
+        });
+    } catch (err) {
+        console.error("Failed to load messages:", err);
+        addMessage("System", "Failed to load chat history.", false);
+    }
+}
+
 </script>
 
 </body>
