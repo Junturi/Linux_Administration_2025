@@ -59,7 +59,8 @@ services:
     env_file: .env
     depends_on:
       - mqtt
-      - db
+      - db:
+        condition: service_healthy
     networks:
       - backend_frontend_net
     restart: unless-stopped
