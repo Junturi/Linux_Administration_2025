@@ -30,13 +30,6 @@ logging.basicConfig(
     )
 logger = logging.getLogger(__name__)
 
-# Tietokantapooli
-db_pool = pooling.MySQLConnectionPool(
-    pool_name="mqtt_pool",
-    pool_size=5,
-    **DB_CONFIG
-)
-
 def save_message(nickname, message, client_id):
     """Tallenna viesti tietokantaan."""
     try:
@@ -92,6 +85,13 @@ def main():
     except mysql.connector.Error as err:
         logger.error(f"Ei yhteyttä tietokantaan: {err}")
         return
+    
+    # Tietokantapooli
+    db_pool = pooling.MySQLConnectionPool(
+        pool_name="mqtt_pool",
+        pool_size=5,
+        **DB_CONFIG
+    )
 
     # MQTT-asiakas
     client = mqtt.Client(client_id="mqtt_logger")
