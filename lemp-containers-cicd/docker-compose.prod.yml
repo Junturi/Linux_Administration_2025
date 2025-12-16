@@ -52,18 +52,13 @@ services:
       - "9002:9001"
     networks:
       - backend_frontend_net
-    healthcheck:
-      test: ["CMD", "mosquitto_sub", "-h", "localhost", "-t", "test", "-C", "1"]
-      interval: 5s
-      retries: 5
     restart: unless-stopped
 
   mqtt-logger:
     image: ${DOCKERHUB_USERNAME}/mqtt-logger:latest
     env_file: .env
     depends_on:
-      - mqtt:
-        condition: service_healthy
+      - mqtt
       - db
     networks:
       - backend_frontend_net
