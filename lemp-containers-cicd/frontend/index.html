@@ -228,7 +228,7 @@ function toggleChat() {
 }
 
 function initChat() {
-    const client = mqtt.connect(`ws://${location.hostname}:9001/mqtt`, {
+    const client = mqtt.connect(`ws://${location.hostname}:9002`, {
         clientId: "web_" + Math.random().toString(16).slice(2)
     });
 
