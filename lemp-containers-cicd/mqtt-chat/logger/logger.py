@@ -87,6 +87,7 @@ def main():
         return
     
     # Tietokantapooli
+    global db_pool # Varmista että db_pool näkyy kaikille
     db_pool = pooling.MySQLConnectionPool(
         pool_name="mqtt_pool",
         pool_size=5,
