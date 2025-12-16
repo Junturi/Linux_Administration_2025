@@ -12,7 +12,7 @@ from mysql.connector import pooling
 import os
 
 # Konfiguraatio
-MQTT_BROKER = "127.0.0.1"
+MQTT_BROKER = "mqtt"
 MQTT_PORT = 1883
 MQTT_TOPIC = "chat/messages"
 
