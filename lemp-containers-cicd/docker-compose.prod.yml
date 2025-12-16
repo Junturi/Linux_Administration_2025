@@ -44,7 +44,7 @@ services:
   mqtt:
     image: eclipse-mosquitto:2
     volumes:
-      - ./mqtt-chat/mosquitto/config:/mosquitto/config
+      - ./mqtt-chat/mosquitto/config:/mosquitto/config/mosquitto.conf:ro
       - ./mqtt-chat/mosquitto/data:/mosquitto/data
       - ./mqtt-chat/mosquitto/log:/mosquitto/log
     ports:
@@ -52,13 +52,18 @@ services:
       - "9002:9001"
     networks:
       - backend_frontend_net
+    healthcheck:
+      test: ["CMD", "mosquitto_sub", "-h", "localhost", "-t", "test", "-C", "1"]
+      interval: 5s
+      retries: 5
     restart: unless-stopped
 
   mqtt-logger:
     image: ${DOCKERHUB_USERNAME}/mqtt-logger:latest
     env_file: .env
     depends_on:
-      - mqtt
+      - mqtt:
+        condition: service_healthy
       - db
     networks:
       - backend_frontend_net
