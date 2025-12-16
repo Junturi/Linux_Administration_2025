@@ -10,6 +10,7 @@ import paho.mqtt.client as mqtt
 import mysql.connector
 from mysql.connector import pooling
 import os
+import time
 
 # Konfiguraatio
 MQTT_BROKER = "mqtt"
@@ -77,15 +78,6 @@ def main():
     """Pääohjelma."""
     logger.info("MQTT Logger käynnistyy...")
 
-    # Testaa tietokantayhteys
-    try:
-        conn = db_pool.get_connection()
-        conn.close()
-        logger.info("Tietokantayhteys OK")
-    except mysql.connector.Error as err:
-        logger.error(f"Ei yhteyttä tietokantaan: {err}")
-        return
-    
     # Tietokantapooli
     global db_pool # Varmista että db_pool näkyy kaikille
     db_pool = pooling.MySQLConnectionPool(
@@ -93,6 +85,26 @@ def main():
         pool_size=5,
         **DB_CONFIG
     )
+
+    # Testaa tietokantayhteys
+    max_attempts = 10
+    for attempt in range(max_attempts):
+        try:
+            db_pool = pooling.MySQLConnectionPool(
+                pool_name="mqtt_pool",
+                pool_size=5,
+                **DB_CONFIG
+            )
+            conn = db_pool.get_connection()
+            conn.close()
+            logger.info("Tietokantayhteys OK")
+            break
+        except mysql.connector.Error as err:
+            logger.warning(f"DB not ready yet (attempt {attempt+1}/{max_attempts}): {err}")
+            time.sleep(3)
+    else:
+        logger.error("Cannot connect to DB after multiple attempts")
+        return
 
     # MQTT-asiakas
     client = mqtt.Client(client_id="mqtt_logger")
