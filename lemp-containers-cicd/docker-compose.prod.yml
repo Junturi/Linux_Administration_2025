@@ -58,9 +58,10 @@ services:
     image: ${DOCKERHUB_USERNAME}/mqtt-logger:latest
     env_file: .env
     depends_on:
-      - mqtt
-      - db:
+      db:
         condition: service_healthy
+      mqtt:
+        condition: service_started
     networks:
       - backend_frontend_net
     restart: unless-stopped
