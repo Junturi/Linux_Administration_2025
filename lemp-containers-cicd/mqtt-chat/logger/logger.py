@@ -10,14 +10,11 @@ import paho.mqtt.client as mqtt
 import mysql.connector
 from mysql.connector import pooling
 import os
-from dotenv import load_dotenv
 
 # Konfiguraatio
 MQTT_BROKER = "127.0.0.1"
 MQTT_PORT = 1883
 MQTT_TOPIC = "chat/messages"
-
-load_dotenv()
 
 DB_CONFIG = {
     "host": os.getenv('DB_HOST'),
